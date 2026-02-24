@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐹 озвученные хомяки</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .header {
+            text-align: center;
+            color: #000000;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .card {
+            background: #f8f9fa;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 1px solid #e0e0e0;
+            transition: transform 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-content {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+        
+        .image-container {
+            flex-shrink: 0;
+        }
+        
+        .image-container img {
+            width: 200px;
+            height: 200px;
+            object-fit: contain;
+            border-radius: 15px;
+        }
+        
+        .info {
+            flex-grow: 1;
+        }
+        
+        .info h2 {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .emotion-tag {
+            display: inline-block;
+            background: #000000;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+        
+        .controls {
+            margin-top: 20px;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .nav-button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        
+        .nav-button.prev {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .nav-button.next {
+            background: #000000;
+            color: white;
+        }
+        
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .nav-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .counter {
+            text-align: center;
+            color: #000000;
+            font-size: 1.2em;
+            margin-top: 20px;
+            font-weight: 600;
+        }
+        
+        .control-panel {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .control-button {
+            padding: 12px 30px;
+            background: #000000;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Manrope', sans-serif;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        .control-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+        }
+        
+        .control-button.paused {
+            background: #4CAF50;
+        }
+        
+        @media (max-width: 768px) {
+            .card-content {
+                flex-direction: column;
+            }
+            
+            .image-container img {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+        
+        .loading {
+            text-align: center;
+            color: #000000;
+            font-size: 1.5em;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🐹 озвученные хомяки</h1>
+        <p><i class="fas fa-images"></i> коллекция из {{ total }} озвученных хомяков</p>
+    </div>
+    
+    <div class="container">
+        <div id="current-card" class="card">
+            <div class="card-content">
+                <div class="image-container">
+                    <img id="hamster-image" src="/image/{{ images[0].index }}" alt="Хомяк">
+                </div>
+                <div class="info">
+                    <h2 id="hamster-comment"></h2>
+                    <span id="hamster-emotion" class="emotion-tag"></span>
+                    <div class="controls">
+                        <audio id="voice-player" style="display: none;"></audio>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="nav-button prev" onclick="prevImage()"><i class="fas fa-chevron-left"></i> предыдущий</button>
+                <button class="nav-button next" onclick="nextImage()">следующий <i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+        
+        <div class="counter">
+            <i class="fas fa-list-ol"></i> <span id="current-index">1</span> / {{ total }}
+        </div>
+        
+        <div class="control-panel">
+            <button id="autoplay-toggle" class="control-button" onclick="toggleAutoplay()" style="display: none;">
+                <i class="fas fa-pause"></i> остановить автопереключение
+            </button>
+        </div>
+    </div>
+    
+    <div id="start-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 9999; font-family: 'Manrope', sans-serif;">
+        <button onclick="startPresentation()" style="padding: 20px 40px; font-size: 1.5em; background: #000; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; font-family: 'Manrope', sans-serif;">
+            <i class="fas fa-play"></i> начать
+        </button>
+    </div>
+    
+    <script>
+        const images = {{ images | tojson }};
+        let currentIndex = 0;
+        let autoPlayEnabled = false;
+        
+        function startPresentation() {
+            document.getElementById('start-overlay').style.display = 'none';
+            autoPlayEnabled = true;
+            document.getElementById('autoplay-toggle').style.display = 'inline-block';
+            updateDisplay();
+        }
+        
+        function toggleAutoplay() {
+            autoPlayEnabled = !autoPlayEnabled;
+            const button = document.getElementById('autoplay-toggle');
+            
+            if (autoPlayEnabled) {
+                button.innerHTML = '<i class="fas fa-pause"></i> остановить автопереключение';
+                button.classList.remove('paused');
+            } else {
+                button.innerHTML = '<i class="fas fa-play"></i> включить автопереключение';
+                button.classList.add('paused');
+            }
+        }
+        
+        function updateDisplay() {
+            const image = images[currentIndex];
+            
+            document.getElementById('hamster-image').src = `/image/${image.index}`;
+            document.getElementById('hamster-comment').textContent = image.comment;
+            document.getElementById('hamster-emotion').textContent = image.emotion;
+            document.getElementById('current-index').textContent = currentIndex + 1;
+            
+            document.querySelector('.nav-button.prev').disabled = currentIndex === 0;
+            document.querySelector('.nav-button.next').disabled = currentIndex === images.length - 1;
+            
+            playVoice(image.voice_file);
+        }
+        
+        function playVoice(voiceFile) {
+            const audio = document.getElementById('voice-player');
+            
+            audio.src = `/voice/${voiceFile}`;
+            
+            audio.play().catch(err => {
+                console.error('Ошибка воспроизведения:', err);
+            });
+            
+            audio.onended = () => {
+                if (autoPlayEnabled && currentIndex < images.length - 1) {
+                    setTimeout(() => {
+                        currentIndex++;
+                        updateDisplay();
+                    }, 500);
+                }
+            };
+        }
+        
+        function nextImage() {
+            if (currentIndex < images.length - 1) {
+                currentIndex++;
+                updateDisplay();
+            }
+        }
+        
+        function prevImage() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateDisplay();
+            }
+        }
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                prevImage();
+            } else if (e.key === 'ArrowRight') {
+                nextImage();
+            }
+        });
+        
+        document.getElementById('hamster-image').src = `/image/${images[0].index}`;
+        document.getElementById('hamster-comment').textContent = images[0].comment;
+        document.getElementById('hamster-emotion').textContent = images[0].emotion;
+    </script>
+</body>
+</html>

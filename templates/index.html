@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hamster Voice Bot</title>
+    <link rel="icon" type="image/png" href="/image/47">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Manrope', sans-serif;
+            background: #fafafa;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #1a1a1a;
+        }
+        
+        .container {
+            max-width: 500px;
+            text-align: center;
+        }
+        
+        .hamster-image {
+            width: 250px;
+            margin: 0 auto 40px;
+        }
+        
+        .hamster-image img {
+            width: 100%;
+            height: auto;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+        
+        p {
+            font-size: 1.1em;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+        
+        .button {
+            display: inline-block;
+            background: #1a1a1a;
+            color: white;
+            padding: 16px 32px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            margin-bottom: 16px;
+        }
+        
+        .button:hover {
+            background: #333;
+            transform: translateY(-2px);
+        }
+        
+        .footer {
+            margin-top: 60px;
+            font-size: 0.9em;
+            color: #999;
+        }
+        
+        .footer a {
+            color: #666;
+            text-decoration: none;
+            border-bottom: 1px solid #ddd;
+            transition: all 0.2s ease;
+        }
+        
+        .footer a:hover {
+            color: #1a1a1a;
+            border-bottom-color: #1a1a1a;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hamster-image">
+            <img id="random-hamster" src="/image/47" alt="Милый хомяк">
+        </div>
+        
+        <h1>Hamster Voice Bot</h1>
+        
+        <p>
+            Озвучивай хомяков голосом и создавай свою коллекцию.<br>
+            Простой бот для творчества и веселья.
+        </p>
+        
+        <a href="https://t.me/soyhamster_bot" class="button">Открыть бота</a>
+        
+        <div class="footer">
+            Разработано <a href="https://dreampartners.ru/dev" target="_blank">dreampartners</a>
+        </div>
+    </div>
+    
+    <script>
+        // Рандомный хомяк при загрузке
+        const randomIndex = Math.floor(Math.random() * 120);
+        document.getElementById('random-hamster').src = `/image/${randomIndex}`;
+    </script>
+</body>
+</html>
